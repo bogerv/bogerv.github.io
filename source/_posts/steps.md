@@ -1,9 +1,11 @@
 ---
-title: write blog steps
+title: 在新的环境使搭建Hexo操作步骤
 date: 2016-10-19 16:37:50
 ---
 
-## 在新的环境使搭建Hexo操作步骤
+## 步骤
+
+<!--more-->
 
 0. 确保已经安装了 [Hexo](https://hexo.io/zh-cn/)
 1. 从 [Github](www.github.com) Clone项目到一个文件夹
