@@ -17,6 +17,8 @@ VS2015 和 Asp.Net Core 的发布, 集成了很多方便的前端工具, bower �
     ```
 3. 安装 Git
 
+<!--more-->
+
 ## 为项目添加 Bower
 ### 在项目中创建一个新的 bower.json 文件
 1. 第一种方式
@@ -168,6 +170,72 @@ gulp.task('bower-restore', function() {
 
 //Set a default tasks
 gulp.task('default', ['vendor-scripts', 'styles'], function () {
+
+});
+```
+
+或者
+
+```
+var gulp = require('gulp');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var del = require('del');
+var minifyCSS = require('gulp-minify-css');
+var copy = require('gulp-copy');
+var bower = require('gulp-bower');
+var sourcemaps = require('gulp-sourcemaps');
+
+var config = {
+    //JavaScript files that will be combined into a jquery bundle
+    jssrc: [
+        'bower_components/**/*.min.js'
+        , 'bower_components/**/*.js'
+    ]
+    , jsout: 'Scripts/lib'
+
+    //CSS and Fonts
+    , cssfontsrc: ['bower_components/**/*.min.css'
+                ,'bower_components/**/*.{otf,eot,svg,ttf,woff,woff2}']
+    , cssfontout: 'Content/lib/css'
+    , deleteend: '/*'
+}
+
+// Synchronously delete the output script file(s)
+//gulp.task('clean-vendor-scripts', function (cb) {
+//    del("Scripts/lib/*", cb);
+//});
+
+//Create a jquery bundled file
+gulp.task('jsfile-copy', function (cb) {
+    del(config.jsout + +config.deleteend, cb);
+
+    // copy js
+    return gulp.src(config.jssrc)
+           .pipe(gulp.dest(config.jsout));
+});
+
+// Synchronously delete the output style files (css / fonts)
+//gulp.task('clean-styles', function (cb) {
+//    del([config.fontsout,
+//              config.cssout], cb);
+//});
+
+gulp.task('cssfont-copy', function (cb) {
+    del(config.cssfontout + config.deleteend, cb);
+
+    // copy css and font
+    return gulp.src(config.cssfontsrc)
+               .pipe(gulp.dest(config.cssfontout))
+});
+
+//Restore all bower packages
+gulp.task('bower-restore', function () {
+    return bower();
+});
+
+//Set a default tasks
+gulp.task('default', ['jsfile-copy', 'cssfont-copy'], function () {
 
 });
 ```

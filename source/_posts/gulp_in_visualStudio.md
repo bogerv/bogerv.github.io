@@ -19,6 +19,8 @@ Once node is installed, we need to install gulp using the node package manager (
 npm install gulp -g
 ```
 
+<!--more-->
+
 ### Setting up your Visual Studio project
 Rather than create a new sample project here, I’m going to use the [Hot Towel SPA template](http://www.johnpapa.net/hot-towel-angular/) from [John Papa](http://www.johnpapa.net/). First, I will create an new empty web application and then install the HotTowel.Angular nuget package.
 
