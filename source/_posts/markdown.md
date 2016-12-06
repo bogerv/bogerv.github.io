@@ -41,6 +41,18 @@ tags: [markdown]
 ```
 [Google](www.google.com)
 ```
+#### 锚点
+跳转到<a href="#abcd">bookmark_text</a>位置
+或者
+跳转到[abcd](#abcd)位置
+```
+跳转到<a href="#abcd">bookmark_text</a>位置
+或者
+跳转到[abcd](#abcd)位置
+```
+
+<span id="abcd">我是abcd</span>
+
 #### 图片
 ```
 ![](http://bogerv.wang/favicon.png)
