@@ -21,6 +21,7 @@ date: 2016-10-19 16:37:50
 ### 使用
 #### 安装
 `$ git clone https://github.com/litten/hexo-theme-yilia.git themes/yilia`
+<p style="color:red;">可以更改名称, 但要与 _config.yml 中填写的主题名称一致</p>
 
 #### 配置
 > 修改 hexo根目录(Clone完成后的文件夹) 下的_config.yml ： theme: yilia
@@ -37,16 +38,17 @@ git pull
 
 menu:
   主页: /
-  随笔: /tags/随笔
+  随笔: /essay
+  心独白: /inner_monologue
 
 # SubNav
 subnav:
-  github: "#"
+  github: "https://github.com/bogerv"
   weibo: "#"
-  rss: "#"
+  #rss: "#"
   zhihu: "#"
   #douban: "#"
-  #mail: "#"
+  #mail: "mailto:litten225@qq.com"
   #facebook: "#"
   #google: "#"
   #twitter: "#"
@@ -60,39 +62,49 @@ rss: /atom.xml
 root: 
 
 # Content
+
+# 文章太长，截断按钮文字
 excerpt_link: more
-fancybox: true
+# 文章卡片右下角常驻链接，不需要请设置为false
+show_all_link: '展开全文'
+# 数学公式
 mathjax: false
-
-# 是否开启动画效果
-animate: true
-
 # 是否在新窗口打开链接
 open_in_new: false
 
+# 打赏
+# 请在需要打赏的文章的md文件头部，设置属性reward: true
+
+# 打赏基础设定：0-关闭打赏； 1-文章对应的md文件里有reward:true属性，才有打赏； 2-所有文章均有打赏
+reward_type: 1
+# 打赏wording
+reward_wording: '谢谢你请我吃糖果'
+# 支付宝二维码图片地址，跟你设置头像的方式一样。比如：/assets/img/alipay.jpg
+alipay: 
+# 微信二维码图片地址
+weixin: 
+
 # Miscellaneous
 google_analytics: ''
-favicon: /favicon.png
+favicon: favicon.png
 
 #你的头像url
-avatar:
+avatar: /assets/img/favicon.jpg
 
 #是否开启分享
-share_jia: true
-share_addthis: false
+share_jia: false
 
 #是否开启多说评论，填写你在多说申请的项目名称 duoshuo: duoshuo-key
 #若使用disqus，请在博客config文件中填写disqus_shortname，并关闭多说评论
 duoshuo: false
 
-# 如不需要，将该项置为false
+# 智能菜单
+# 如不需要，将该对应项置为false
 # 比如
 #smart_menu:
 #  friends: false
-
 smart_menu:
   innerArchive: '所有文章'
-  tagcloud: '标签'
   friends: '友链'
   aboutme: '关于我'
 

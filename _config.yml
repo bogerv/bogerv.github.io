@@ -5,9 +5,8 @@
 # Site
 title: Bogerv
 subtitle: Everything Is Gonna Be Okay
-description: 
+description:
 author: Bogerv
-#email: boger@163.com
 language:
 timezone:
 
@@ -40,7 +39,7 @@ relative_link: false
 future: true
 highlight:
   enable: true
-  line_number: false
+  line_number: true
   auto_detect: false
   tab_replace:
 
@@ -72,3 +71,22 @@ deploy:
   type: git
   repo: https://github.com/bogerv/bogerv.github.io.git
   branch: master
+
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: true
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true

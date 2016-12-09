@@ -45,7 +45,7 @@ tags: [git, ASP.NET MVC]
 * 新建 ConnectionStrings.config 文件
 * 把先面的内容添加到 ConnectionStrings.config 中 (不需要 xml 头声明, 只有 `connectionStrings` 标签, 然后在标签里添加 `<add>` 元素)
 
-    **ConnectionStrings.config 文件例子:**
+    **ConnectionStrings.config 文件例子:** <label style="color: red;">这里面的 &lt;connectionStrings&gt; 中不要添加 configSource 标签, 否则报错 </label>
     ```xml
     <connectionStrings>
     <add name="DefaultConnection" value="YourConnectionStringAndPassword"/>
@@ -58,6 +58,8 @@ tags: [git, ASP.NET MVC]
     <connectionStrings configSource="ConnectionStrings.config">
     </connectionStrings>
     ```
+*  右键文件选择属性, 设置 **Copy to Output Directory** 为 `Copy if newer` 或者 `Copy always`.
+
 **同以前访问连接字符串方式相同, 可直接使用如下代码访问:**
 ```csharp
 var conn = ConfigurationManager.ConnectionStrings["DefaultConnection"];
@@ -89,6 +91,9 @@ string connString = conn.ConnectionString;
     <add key="UnobtrusiveJavaScriptEnabled" value="true" />
   </appSettings>
   ```
+
+* 右键文件选择属性, 设置 **Copy to Output Directory** 为 `Copy if newer` 或者 `Copy always`.
+  
 **在项目中也可以直接使用如下代码来访问:**
   ```csharp
   var pwd = ConfigurationManager.AppSettings["MAIL_PASSWORD"];
