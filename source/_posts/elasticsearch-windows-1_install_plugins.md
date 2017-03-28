@@ -4,7 +4,7 @@ date: 2017-01-18 11:39:03
 tags: [Elasticsearch,windows]
 ---
 # 简介
-关于 Elasticsearch 的介绍可以查看 [<<Elasticsearch 权威指南>>](https://www.gitbook.com/book/fuxiaopang/learnelasticsearch/details), 讲解的非常详细.
+关于 Elasticsearch 的介绍可以查看 [Elasticsearch 权威指南](https://www.gitbook.com/book/fuxiaopang/learnelasticsearch/details), 讲解的非常详细.
 
 本文主要讲解, Elasticsearch 5.x.x 版本在 Windows 环境下的安装和中文分词插件配置
 
@@ -54,7 +54,7 @@ Git 地址 [elasticsearch-head](https://github.com/mobz/elasticsearch-head), 对
 * 访问 localhost://5601 即可
 
 ## 安装 elasticsearch-analysis-ik
-Git 地址 [elasticsearch-head](https://github.com/medcl/elasticsearch-analysis-ik)
+Git 地址 [elasticsearch-analysis-ik](https://github.com/medcl/elasticsearch-analysis-ik)
 > 版本要与 elasticsearch 版本对应
 
 * 在 Elasticsearch 根目录中 plugins 下新建 ik 文件夹
@@ -64,7 +64,7 @@ Git 地址 [elasticsearch-head](https://github.com/medcl/elasticsearch-analysis-
     ![](/assets/elasticsearch/ik_detail.png)
 
 ## 安装 elasticsearch-analysis-pinyin
-Git 地址 [elasticsearch-head](https://github.com/medcl/elasticsearch-analysis-pinyin)
+Git 地址 [elasticsearch-analysis-pinyin](https://github.com/medcl/elasticsearch-analysis-pinyin)
 > 版本要与 elasticsearch 版本对应
 
 * 在 Elasticsearch 根目录中 plugins 下新建 pinyin 文件夹
