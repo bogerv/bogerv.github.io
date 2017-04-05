@@ -9,9 +9,15 @@ menu:
 subnav:
   github: "https://github.com/bogerv"
   weibo: "#"
-  #rss: "#"
+  rss: "#"
   zhihu: "#"
+  #qq: "#"
+  #weixin: "#"
+  #jianshu: "#"
   #douban: "#"
+  #segmentfault: "#"
+  #bilibili: "#"
+  #acfun: "#"
   #mail: "mailto:litten225@qq.com"
   #facebook: "#"
   #google: "#"
@@ -28,13 +34,13 @@ root:
 # Content
 
 # 文章太长，截断按钮文字
-excerpt_link: more
+excerpt_link: ''
 # 文章卡片右下角常驻链接，不需要请设置为false
 show_all_link: '展开全文'
 # 数学公式
 mathjax: false
 # 是否在新窗口打开链接
-open_in_new: false
+open_in_new: true
 
 # 打赏
 # 请在需要打赏的文章的md文件头部，设置属性reward: true
@@ -49,8 +55,9 @@ alipay:
 weixin: 
 
 # Miscellaneous
+baidu_analytics: ''
 google_analytics: ''
-favicon: favicon.png
+favicon: /favicon.png
 
 #你的头像url
 avatar: /assets/img/favicon.jpg
@@ -62,6 +69,18 @@ share_jia: false
 #若使用disqus，请在博客config文件中填写disqus_shortname，并关闭多说评论
 duoshuo: false
 
+# 样式定制 - 一般不需要修改，除非有很强的定制欲望…
+style:
+  # 头像上面的背景颜色
+  header: '#79B329'
+  # 右滑板块背景
+  slider: 'linear-gradient(200deg,#a0cfe4,#e8c37e)'
+
+# slider的设置
+slider:
+  # 是否默认展开tags板块
+  showTags: false
+
 # 智能菜单
 # 如不需要，将该对应项置为false
 # 比如
@@ -69,15 +88,11 @@ duoshuo: false
 #  friends: false
 smart_menu:
   innerArchive: '所有文章'
-  friends: false
+  friends: '链接'
   aboutme: '关于我'
 
 friends:
-  友情链接1: http://localhost:4000/
-  友情链接2: http://localhost:4000/
-  友情链接3: http://localhost:4000/
-  友情链接4: http://localhost:4000/
-  友情链接5: http://localhost:4000/
-  友情链接6: http://localhost:4000/
+  litten(主题作者): http://litten.me/
+  Damonare: http://damonare.github.io
 
 aboutme: bogerv@163.com
