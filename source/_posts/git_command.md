@@ -1,6 +1,7 @@
 ---
 title: git pull时保存或删除凭证
 date: 2016-10-19 17:25:50
+categories: [Git]
 ---
 
 #### 保存Git凭证:

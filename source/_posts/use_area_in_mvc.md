@@ -34,12 +34,12 @@ context.MapRoute(
 
 **/Global.asax.cs 或者 RouteConfig.cs**
 ```
-routes.MapRoute(
-    name: "Default",
-    url: "{controller}/{action}/{id}",
-    defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
-    namespaces: new string[] { "[项目名称].Web.Controllers" }
-);
+routes.MapRoute(    //Default Route
+     "Default", // Route name
+     "{controller}/{action}/{id}", // URL with parameters
+     new { controller = "Home", action = "Index", id = UrlParameter.Optional }, // Parameter defaults
+     new string[] { "[项目名称].Controllers" }
+ );
 ```
 
 ### **2. 改进**

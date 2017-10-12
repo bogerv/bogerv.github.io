@@ -2,6 +2,7 @@
 title: 在 VS2013 中使用 bower
 date: 2016-10-26 17:35:03
 tags: [bower,VS2013,gulp]
+categories: [bower]
 ---
 
 ## 简介

@@ -1,7 +1,7 @@
 ---
 title: Nginx 在 Windows 下基本安装和配置
 date: 2017-03-20 12:35:03
-tags: [nginx]
+categories: [angular2]
 ---
 
 ## 0.0 下载 Nginx

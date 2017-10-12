@@ -1,7 +1,8 @@
 ---
 title: C# 中的协变性、逆变性和不变性
 date: 2017-3-18 17:35:03
-tags: [C#]
+tags: [C# Syntax]
+categories: [dotnet]
 ---
 
 # C# 中的协变性、逆变性和不变性

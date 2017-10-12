@@ -1,7 +1,7 @@
 ---
 title: 0. Angular2 简介
 date: 2017-03-19 13:35:03
-tags: [Angular2]
+categories: [angular2]
 ---
 
 # 0.0 原文链接
