@@ -1,6 +1,7 @@
 ---
 title: beego Config 说明
 date: 2016-10-19 17:25:50
+categories: [go]
 ---
 
 * beego.BConfig
@@ -28,14 +29,14 @@ date: 2016-10-19 17:25:50
             > StaticExtensionsToGzip = .css, .js
 
         * TemplateLeft
-            > 模板左标签，默认值是{{
+            > 模板左标签，默认值是{% raw %}{{{% endraw %}
 
-            > beego.BConfig.WebConfig.TemplateLeft="{{"
+            > beego.BConfig.WebConfig.TemplateLeft="{% raw %}{{{% endraw %}"
 
         * TemplateRight
-            > 模板右标签，默认值是}}
+            > 模板右标签，默认值是{% raw %}}}{% endraw %}
 
-            > beego.BConfig.WebConfig.TemplateRight="}}"
+            > beego.BConfig.WebConfig.TemplateRight="{% raw %}{{{% endraw %}"
 
         * ViewsPath
         * EnableXSRF
