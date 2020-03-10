@@ -6,9 +6,10 @@
 title: Bogerv
 subtitle: Everything Is Gonna Be Okay
 description:
+keywords: go,.net
 author: Bogerv
-language:
-timezone:
+language: en
+timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -64,7 +65,7 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 # theme: yilia
-theme: next
+theme: obsidian
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

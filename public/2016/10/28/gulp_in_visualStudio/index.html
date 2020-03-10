@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>在 Visual Studio 中使用 gulp - Bogerv</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="go Bogerv,"> 
+    <meta name="description" content="What is Gulp?Gulp calls itself the streaming build system. No, this isn’t a replacement for build s,"> 
+    <meta name="author" content="Bogerv"> 
+    <link rel="alternative" href="atom.xml" title="Bogerv" type="application/atom+xml"> 
+    <link rel="icon" href="/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+</html>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Bogerv</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/favicon.png" alt="" data-url="http://bogerv.wang">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">在 Visual Studio 中使用 gulp</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="javascript:;"><b>「 </b>Article<b> 」</b></a>
+                
+                October 28, 2016
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2016/10/28/gulp_in_visualStudio/" title="在 Visual Studio 中使用 gulp">在 Visual Studio 中使用 gulp</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    16k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    15 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Visual-Stduio/">Visual Stduio</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/gulp/">gulp</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h2 id="What-is-Gulp"><a href="#What-is-Gulp" class="headerlink" title="What is Gulp?"></a>What is Gulp?</h2><p>Gulp calls itself <em>the streaming build system</em>. No, this isn’t a replacement for build systems like msbuild or nant. In this case, we are talking about building the client side parts of our applications like JavaScript files, StyleSheets (CSS, SASS or LESS) and HTML files.</p>
+<p>The basic idea with Gulp is that you use pipes to stream a set of data (usually files) through some kind of processing. As it turns out, it is pretty easy to use and is probably best described using an example.</p>
+<h3 id="Installing-Node-and-Gulp"><a href="#Installing-Node-and-Gulp" class="headerlink" title="Installing Node and Gulp"></a>Installing Node and Gulp</h3><p>If you don’t already have it installed, <a href="http://nodejs.org/" target="_blank" rel="noopener">download and install node.js</a>.</p>
+<blockquote>
+<p>If you are using VS 2015 and ASP.NET 5, Visual Studio will install npm and gulp for you automatically.</p>
+</blockquote>
+<p>Once node is installed, we need to install gulp using the node package manager (npm). From the command line, run</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install gulp -g</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h3 id="Setting-up-your-Visual-Studio-project"><a href="#Setting-up-your-Visual-Studio-project" class="headerlink" title="Setting up your Visual Studio project"></a>Setting up your Visual Studio project</h3><p>Rather than create a new sample project here, I’m going to use the <a href="http://www.johnpapa.net/hot-towel-angular/" target="_blank" rel="noopener">Hot Towel SPA template</a> from <a href="http://www.johnpapa.net/" target="_blank" rel="noopener">John Papa</a>. First, I will create an new empty web application and then install the HotTowel.Angular nuget package.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Install-Package HotTowel.Angular</span><br></pre></td></tr></table></figure>
+
+<p>I wanted to use this template as an example because it is a perfect candidate for Gulp. The application is written using AngularJS and the code is split across 14 different JS files. From a code maintenance / readability standpoint, it is definitely good to split the code into files like this. From an application loading performance standpoint however, loading 14 separate JS files is generally not a great idea.</p>
+<h3 id="Initializing-our-project-for-Gulp"><a href="#Initializing-our-project-for-Gulp" class="headerlink" title="Initializing our project for Gulp"></a>Initializing our project for Gulp</h3><p>First, we need to create a package.json file in the root directory of the your project. We can do this by running npm init on the command line or simply creating a file with the following contents:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">   &quot;name&quot;: &quot;YourProjectName&quot;,</span><br><span class="line"></span><br><span class="line">   &quot;version&quot;: &quot;1.0.0&quot;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Next, we will install a few packages that we will use for this project. Run the following commands from the same folder that you added the <code>package.json</code> file.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install gulp --save-dev</span><br><span class="line">npm install gulp-concat --save-dev</span><br><span class="line">npm install gulp-uglify --save-dev</span><br><span class="line">npm install del --save-dev</span><br></pre></td></tr></table></figure>
+
+<p>Note, the –save-dev option here is telling node to add these packages to a devDependencies section in the package.json file and install the packages in a node_modules folder in the current folder . At any time, you or another developer on your team can re-install all the devDependencies by simply running <strong><code>npm install</code></strong>.</p>
+<blockquote>
+<p>the gulpfile.js content can change whatever you want</p>
+</blockquote>
+<p>Finally, create a gulpfile.js file in the same folder.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">// include plug-ins</span><br><span class="line">var gulp = require(&apos;gulp&apos;);</span><br><span class="line">var concat = require(&apos;gulp-concat&apos;);</span><br><span class="line">var uglify = require(&apos;gulp-uglify&apos;);</span><br><span class="line">var del = require(&apos;del&apos;);</span><br><span class="line"></span><br><span class="line">var config = &#123;</span><br><span class="line">    //Include all js files but exclude any min.js files</span><br><span class="line">    src: [&apos;app/**/*.js&apos;, &apos;!app/**/*.min.js&apos;]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//delete the output file(s)</span><br><span class="line">gulp.task(&apos;clean&apos;, function () &#123;</span><br><span class="line">    //del is an async function and not a gulp plugin (just standard nodejs)</span><br><span class="line">    //It returns a promise, so make sure you return that from this task function</span><br><span class="line">    //  so gulp knows when the delete is complete</span><br><span class="line">    return del([&apos;app/all.min.js&apos;]);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// Combine and minify all files from the app folder</span><br><span class="line">// This tasks depends on the clean task which means gulp will ensure that the </span><br><span class="line">// Clean task is completed before running the scripts task.</span><br><span class="line">gulp.task(&apos;scripts&apos;, [&apos;clean&apos;], function () &#123;</span><br><span class="line"></span><br><span class="line">    return gulp.src(config.src)</span><br><span class="line">      .pipe(uglify())</span><br><span class="line">      .pipe(concat(&apos;all.min.js&apos;))</span><br><span class="line">      .pipe(gulp.dest(&apos;app/&apos;));</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//Set a default tasks</span><br><span class="line">gulp.task(&apos;default&apos;, [&apos;scripts&apos;], function () &#123; &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>Now, run gulp from the command line and you should see some output stating that scripts task is completed successfully.</p>
+<p>This will have created an all.min.js file that contains minified JavaScript from all the js files in the app folder.</p>
+<p>Now we include all.min.js in the Visual Studio project and replace the 14 separate script includes with a single include to the new script.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;app/all.min.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Watching-for-changes"><a href="#Watching-for-changes" class="headerlink" title="Watching for changes"></a>Watching for changes</h3><p>Wouldn’t it be nice gulp could automatically re-run the scripts task whenever we make a change any of our js files? Sure, we can do that!</p>
+<p>Add the following to our <code>gulpfile.js</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(&apos;watch&apos;, function()&#123;</span><br><span class="line">    return gulp.watch(config.src, [&apos;scripts&apos;]);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>Now, if we run <code>gulp watch</code> from the command line, our new <code>watch</code> task will watch for changes to any of our js files. When a change is detected it will trigger the <code>scripts</code> task to execute, regenerating the all.min.js file.</p>
+<p>You can learn more about gulp.watch <a href="https://github.com/gulpjs/gulp/blob/master/docs/API.md#gulpwatchglob--opts-tasks-or-gulpwatchglob--opts-cb" target="_blank" rel="noopener">here</a>. Note that at this time, the built in gulp.watch has some bugs that stop it from watching new files. These should be fixed soon but in the mean time you might want to use use the popular <a href="https://github.com/floatdrop/gulp-watch/blob/master/docs/readme.md#starting-tasks-on-events" target="_blank" rel="noopener">gulp-watch plugin</a>.</p>
+<h3 id="Integrating-with-Visual-Studio"><a href="#Integrating-with-Visual-Studio" class="headerlink" title="Integrating with Visual Studio"></a>Integrating with Visual Studio</h3><p>So far, we have been working primarily in the command line. It would be nice if we could integrate with our existing Visual Studio experience.</p>
+<p>Luckily, we can with the new <a href="http://visualstudiogallery.msdn.microsoft.com/8e1b4368-4afb-467a-bc13-9650572db708" target="_blank" rel="noopener">Task Runner Explorer</a> plugin. Once the plugin is installed, open the Task Runner Explorer from the View –&gt; Other Windows –&gt; Task Runner Explorer menu.</p>
+<p>This window will show you all the tasks in the gulp file and allow you to bind those tasks to certain Visual Studio events. This way, we don’t need to remember to run the gulp tasks from the command line. The IDE can handle it for us.</p>
+<p>What I like to do is bind the <code>watch</code> task to the Solution Open event and bind the <code>scripts</code> task to the <em>Before Build</em> event.</p>
+<p>With these bindings, we can make sure that all.min.js is correctly generated when we build the application and also regenerated anytime I make changes to the js files.</p>
+<p>The Task Runner Explorer also shows the output of any running tasks. Here you can see the output from the watch task, which is always running in the background in this configuration.</p>
+<h3 id="Development-vs-Production"><a href="#Development-vs-Production" class="headerlink" title="Development vs Production"></a>Development vs Production</h3><p>To simplify debugging, you may want to include all your individual scripts in a development build and only include the single concatenated/minified script in your production build. Take a look at my post on <a href="http://www.davepaquette.com/archive/2015/05/05/web-optimization-development-and-production-in-asp-net-mvc6.aspx" target="_blank" rel="noopener">Web Optimization in ASP.NET Core MVC</a> for some ideas on how to this can be accomplished. That post covers ASP.NET Core MVC but a similar approach could be used in MVC 5. With the following in your cshtml file, the individual files would be included when debug=”true” is set in your web.config. If debug=”false”, then only the single concatenated/minified file is included.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">@if (HttpContext.Current.IsDebuggingEnabled)</span><br><span class="line">&#123;</span><br><span class="line">    &lt;!-- Bootstrapping --&gt;</span><br><span class="line">    &lt;script src=&quot;app/app.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;app/config.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;app/config.exceptionHandler.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;app/config.route.js&quot;&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- common Modules --&gt;</span><br><span class="line">    &lt;script src=&quot;app/common/common.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;app/common/logger.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;app/common/spinner.js&quot;&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- common.bootstrap Modules --&gt;</span><br><span class="line">    &lt;script src=&quot;app/common/bootstrap/bootstrap.dialog.js&quot;&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- app --&gt;</span><br><span class="line">    &lt;script src=&quot;app/admin/admin.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;app/dashboard/dashboard.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;app/layout/shell.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;app/layout/sidebar.js&quot;&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- app Services --&gt;</span><br><span class="line">    &lt;script src=&quot;app/services/datacontext.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;app/services/directives.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">    &lt;script src=&quot;app/all.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Note that this only works for cshtml files in an MVC application as it requires the Razor view engine.</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="/assets/img/favicon.jpg" height=300 width=300></img>
+                    <p>Bogerv</p>
+                    <span>Everything is gonna to be ok!</span>
+                    <dl>
+                        <dd><a href="https://github.com/bogerv" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">26 <p>Articles</p></a></li>
+                    <li><a href="/categories">6 <p>Categories</p></a></li>
+                    <li><a href="/tags">25 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-Gulp"><span class="toc-number">1.</span> <span class="toc-text">What is Gulp?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Installing-Node-and-Gulp"><span class="toc-number">1.1.</span> <span class="toc-text">Installing Node and Gulp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Setting-up-your-Visual-Studio-project"><span class="toc-number">1.2.</span> <span class="toc-text">Setting up your Visual Studio project</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Initializing-our-project-for-Gulp"><span class="toc-number">1.3.</span> <span class="toc-text">Initializing our project for Gulp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Watching-for-changes"><span class="toc-number">1.4.</span> <span class="toc-text">Watching for changes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Integrating-with-Visual-Studio"><span class="toc-number">1.5.</span> <span class="toc-text">Integrating with Visual Studio</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Development-vs-Production"><span class="toc-number">1.6.</span> <span class="toc-text">Development vs Production</span></a></li></ol></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            Bogerv
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/go/go.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Everything is gonna to be ok!", "Rome was not built in one day!"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

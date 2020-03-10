@@ -1,0 +1,450 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Asynchronous Programming Model (APM) - Bogerv</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="go Bogerv,"> 
+    <meta name="description" content="也称为 IAsyncResult 模式, 异步操作需要使用 BeginOperationName 和 EndOperationName 方法. (例如, FileStream类提供了BeginRea,"> 
+    <meta name="author" content="Bogerv"> 
+    <link rel="alternative" href="atom.xml" title="Bogerv" type="application/atom+xml"> 
+    <link rel="icon" href="/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+</html>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Bogerv</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/favicon.png" alt="" data-url="http://bogerv.wang">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Asynchronous Programming Model (APM)</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="javascript:;"><b>「 </b>Article<b> 」</b></a>
+                
+                December 06, 2016
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2016/12/06/asynchronous_programming_model/" title="Asynchronous Programming Model (APM)">Asynchronous Programming Model (APM)</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    7.2k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    7 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/net/">.net</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/IAsyncResult/">IAsyncResult</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/async/">async</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <p>也称为 IAsyncResult 模式, 异步操作需要使用 Begin<em>OperationName</em> 和 End<em>OperationName</em> 方法. (例如, FileStream类提供了BeginRead 和 EndRead (Read方法的异步版本) 方法来异步读取字节).</p>
+<blockquote>
+<p>从 .NET Framework 4.0 开始, 任务并行库为异步和并行编程提供了新的模式. 详见: <a href="https://msdn.microsoft.com/zh-cn/library/dd460717(v=vs.110).aspx" target="_blank" rel="noopener">Task Parallel Libary (TPL)</a> 和 <a href="https://msdn.microsoft.com/zh-cn/library/hh873175(v=vs.110).aspx" target="_blank" rel="noopener">Task-based Asynchronous Pattern (TAP)</a><br>因此, 不再建议使用此种模式.</p>
+</blockquote>
+<a id="more"></a>
+
+<p>在调用完 <strong>Begin*</strong>OperationName* 后, 应用程序可以继续在调用线程上执行其他操作, 同时异步操作在另外一个线程上执行. 每次调用 <strong>Begin*</strong>OperationName* 时, 应用程序还应调用 <strong>End*</strong>OperationName* 来获取操作的结果.</p>
+<h2 id="开始一个异步操作"><a href="#开始一个异步操作" class="headerlink" title="开始一个异步操作"></a>开始一个异步操作</h2><p><strong>Begin*</strong>OperationName* 方法开始异步操作 <em>OperationName</em>, 并返回实现 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult(v=vs.110).aspx" target="_blank" rel="noopener">IAsyncResult</a> 接口的对象. <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult(v=vs.110).aspx" target="_blank" rel="noopener">IAsyncResult</a>存储有关异步操作信息. 异步操作信息如下:</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th align="center">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.asyncstate(v=vs.110).aspx" target="_blank" rel="noopener">AsyncState</a></td>
+<td align="center">一个特定于应用程序的可选对象, 其中包含有关异步操作的信息</td>
+</tr>
+<tr>
+<td><a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.asyncwaithandle(v=vs.110).aspx" target="_blank" rel="noopener">AsyncWaitHandle</a></td>
+<td align="center">一个 <a href="https://msdn.microsoft.com/zh-cn/library/system.threading.waithandle(v=vs.110).aspx" target="_blank" rel="noopener">WaitHandle</a>, 可用来在异步操作完成之前阻止应用程序执行</td>
+</tr>
+<tr>
+<td><a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.completedsynchronously(v=vs.110).aspx" target="_blank" rel="noopener">CompletedSynchronously</a></td>
+<td align="center">指示异步操作是否是在用于调用 <strong>Begin*</strong>OperationName* 的线程上完成, 而不是在单独的 ThreadPool 线程上完成</td>
+</tr>
+<tr>
+<td><a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.iscompleted(v=vs.110).aspx" target="_blank" rel="noopener">IsCompleted</a></td>
+<td align="center">指示异步操作是否完成</td>
+</tr>
+</tbody></table>
+<p><strong>Begin*</strong>OperationName* 方法使用该方法同步版本签名中通过值或引用传递的任何参数. 并且不包含任何输出参数. <strong>Begin*</strong>OperationName* 方法签名还包含两个附加参数. </p>
+<ul>
+<li>第一个参数定义了一个 <a href="https://msdn.microsoft.com/zh-cn/library/system.asynccallback(v=vs.110).aspx" target="_blank" rel="noopener">AsyncCallback</a> 委托, 当异步操作完成时调用委托所引用的方法. 操作完成时, 如果不想调用任何方法, 可以指定为 null.</li>
+<li>第二个参数是用户自定义对象, 此对象可用来向异步操作完成时调用的方法传递应用程序特定的状态信息.</li>
+</ul>
+<p>如果 <strong>Begin*</strong>OperationName* 方法还采用其他一些操作特定的参数 (例如, 一个用于存储从文件读取的字节的字节数组), 则 <a href="https://msdn.microsoft.com/zh-cn/library/system.asynccallback(v=vs.110).aspx" target="_blank" rel="noopener">AsyncCallback</a> 和应用程序状态对象将是 <strong>Begin*</strong>OperationName* 方法签名中的最后两个参数</p>
+<p><strong>Begin*</strong>OperationName* 立即返回对调用线程 (主线程) 的控制. 如果 <strong>Begin*</strong>OperationName* 方法抛出异常, 则会在开始异步操作之前抛出异常, 并且不会调用回调方法.</p>
+<h2 id="结束异步操作"><a href="#结束异步操作" class="headerlink" title="结束异步操作"></a>结束异步操作</h2><p><strong>End*</strong>OperationName* 方法可结束异步操作 <em>OperationName</em>. <strong>End*</strong>OperationName* 方法的返回值与其同步对应方法的返回值类型相同, 并且是特定于异步操作的. 例如, EndRead 方法返回从 <a href="https://msdn.microsoft.com/zh-cn/library/system.io.filestream(v=vs.110).aspx" target="_blank" rel="noopener">FileStream</a> 读取的字节数, <a href="https://msdn.microsoft.com/zh-cn/library/system.net.dns.endgethostbyname(v=vs.110).aspx" target="_blank" rel="noopener">EndGetHostByName</a> 方法返回包含有关主机的信息的 <a href="https://msdn.microsoft.com/zh-cn/library/system.net.iphostentry(v=vs.110).aspx" target="_blank" rel="noopener">IPHostEntry</a> 对象. <strong>End*</strong>OperationName* 方法采用该方法同步版本的签名中声明的所有输出参数或引用参数. 除了来自同步方法的参数外, <strong>End*</strong>OperationName* 方法还包括 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult(v=vs.110).aspx" target="_blank" rel="noopener">IAsyncResult</a> 参数. 调用方必须将对应调用返回的实例传递给 BeginOperationName.<br>如果调用 <strong>End*</strong>OperationName* 时 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult(v=vs.110).aspx" target="_blank" rel="noopener">IAsyncResult</a> 对象表示的异步操作尚未完成, 则 <strong>End*</strong>OperationName* 将在异步操作完成之前阻止调用线程. 异步操作引发的异常是从 <strong>End*</strong>OperationName* 方法引发的. 未定义多次使用同一 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult(v=vs.110).aspx" target="_blank" rel="noopener">IAsyncResult</a> 调用 <strong>End*</strong>OperationName* 方法的效果. 同样, 也未定义使用不是相关 Begin 方法返回的 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult(v=vs.110).aspx" target="_blank" rel="noopener">IAsyncResult</a> 调用 <strong>End*</strong>OperationName* 方法的效果. </p>
+<blockquote>
+<p>对于这两种未定义的情况, 实施者应考虑引发 <a href="https://msdn.microsoft.com/zh-cn/library/system.invalidoperationexception(v=vs.110).aspx" target="_blank" rel="noopener">InvalidOperationException</a>. </p>
+</blockquote>
+<blockquote>
+<p>此设计模式的实施者应通知调用方异步操作已通过以下步骤完成: 将 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.iscompleted(v=vs.110).aspx" target="_blank" rel="noopener">IsCompleted</a> 设置为 true, 调用异步回调方法 ( 如果已指定一个回调方法 ), 然后发送 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.asyncwaithandle(v=vs.110).aspx" target="_blank" rel="noopener">AsyncWaitHandle</a> 信号. </p>
+</blockquote>
+<p>对于访问异步操作的结果, 应用程序开发人员有若干种设计选择. 正确的选择取决于应用程序是否有可以在操作完成时执行的指令. 如果应用程序在接收到异步操作结果之前不能进行任何其他工作, 则必须在获得这些结果之前先阻止该应用程序进行其他工作. 若要在异步操作完成之前阻止应用程序, 可以使用下列方法之一: </p>
+<ul>
+<li>从应用程序的主线程调用 <strong>End*</strong>OperationName*, 阻止应用程序执行, 直到操作完成. 有关演示此方法的示例, 请参阅<a href="https://msdn.microsoft.com/zh-cn/library/ms228967(v=vs.110).aspx" target="_blank" rel="noopener">Blocking Application Execution by Ending an Async Operation</a>. </li>
+<li>使用 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.asyncwaithandle(v=vs.110).aspx" target="_blank" rel="noopener">AsyncWaitHandle</a> 来阻止应用程序执行, 直到一个或多个操作完成. 有关演示此方法的示例, 请参阅<a href="https://msdn.microsoft.com/zh-cn/library/ms228962(v=vs.110).aspx" target="_blank" rel="noopener">Blocking Application Execution Using an AsyncWaitHandle</a>. </li>
+</ul>
+<p>在异步操作完成时不需要阻止的应用程序可使用下列方法之一: </p>
+<ul>
+<li>按以下方式轮询操作完成状态: 定期检查 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.iscompleted(v=vs.110).aspx" target="_blank" rel="noopener">IsCompleted</a> 属性, 并在操作完成后调用 <strong>End*</strong>OperationName*. 有关演示此方法的示例, 请参阅<a href="https://msdn.microsoft.com/zh-cn/library/ms228968(v=vs.110).aspx" target="_blank" rel="noopener">Polling for the Status of an Asynchronous Operation</a>. </li>
+<li>使用 <a href="https://msdn.microsoft.com/zh-cn/library/system.asynccallback(v=vs.110).aspx" target="_blank" rel="noopener">AsyncCallback</a> 委托来指定要在操作完成时调用的方法. 有关演示此方法的示例, 请参阅<a href="https://msdn.microsoft.com/zh-cn/library/ms228972(v=vs.110).aspx" target="_blank" rel="noopener">Using an AsyncCallback Delegate to End an Asynchronous Operation</a>. </li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="/assets/img/favicon.jpg" height=300 width=300></img>
+                    <p>Bogerv</p>
+                    <span>Everything is gonna to be ok!</span>
+                    <dl>
+                        <dd><a href="https://github.com/bogerv" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">26 <p>Articles</p></a></li>
+                    <li><a href="/categories">6 <p>Categories</p></a></li>
+                    <li><a href="/tags">25 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始一个异步操作"><span class="toc-number">1.</span> <span class="toc-text">开始一个异步操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结束异步操作"><span class="toc-number">2.</span> <span class="toc-text">结束异步操作</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            Bogerv
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/go/go.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Everything is gonna to be ok!", "Rome was not built in one day!"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>

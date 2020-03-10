@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ASP.NET MVC 源码控制里保持私有设置的 web.config 或 app.config - Bogerv</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="go Bogerv,"> 
+    <meta name="description" content="
+原英文博客地址: ASP.NET MVC: Keep Private Settings Out of Source Control
+
+在使用 git 管理 ASP.NET MVC 代码时, 当别人,"> 
+    <meta name="author" content="Bogerv"> 
+    <link rel="alternative" href="atom.xml" title="Bogerv" type="application/atom+xml"> 
+    <link rel="icon" href="/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+</html>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">Bogerv</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/favicon.png" alt="" data-url="http://bogerv.wang">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">ASP.NET MVC 源码控制里保持私有设置的 web.config 或 app.config</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="javascript:;"><b>「 </b>Article<b> 」</b></a>
+                
+                December 07, 2016
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2016/12/07/keep_private_setting_out_of_source_control/" title="ASP.NET MVC 源码控制里保持私有设置的 web.config 或 app.config">ASP.NET MVC 源码控制里保持私有设置的 web.config 或 app.config</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    12k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    11 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/ASP-NET-MVC/">ASP.NET MVC</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/git/">git</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <blockquote>
+<p>原英文博客地址: <a href="http://johnatten.com/2014/04/06/asp-net-mvc-keep-private-settings-out-of-source-control/#Use-configSource-Attribute-to-move-an-Entire-Configuration-Section-to-Its-Own-File" target="_blank" rel="noopener">ASP.NET MVC: Keep Private Settings Out of Source Control</a></p>
+</blockquote>
+<p>在使用 git 管理 ASP.NET MVC 代码时, 当别人意外 push 了自己修改过的 web.config 或 app.config 文件, 我们每次在 pull 时总要修改数据库连接字符串或者一些其他私有设置. 很麻烦</p>
+<p>现有以下解决方式:</p>
+<ul>
+<li><a href="#use-configSource-attr">使用 configSource Attribute 把整体配置部分移动到单独的文件中</a></li>
+<li><a href="#use-file-attr">使用 File Attribute 有选择的移动 Application Settings (appSettings 标签下的设置) 到外部文件</a></li>
+<li><a href="#add-ignore">在 .gitignore 中添加特殊文件</a></li>
+<li><a href="#document-is-key">Documentation is Key</a></li>
+</ul>
+<a id="more"></a>
+
+<p>以 ASP.NET Web.config 文件为例:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">  A bunch of ASP.NET MVC web config stuff goes here . . . </span></span><br><span class="line"><span class="comment">  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">connectionStrings</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">name</span>=<span class="string">"DefaultConnection"</span> <span class="attr">value</span>=<span class="string">"YourConnectionStringAndPassword"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">connectionStrings</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">appSettings</span> <span class="attr">file</span>=<span class="string">"PrivateSettings.config"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"owin:AppStartup"</span> <span class="attr">value</span>=<span class="string">"AspNetIdentity2ExtendingApplicationUser.Startup,AspNetIdentity2ExtendingApplicationUser"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"webpages:Version"</span> <span class="attr">value</span>=<span class="string">"3.0.0.0"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"webpages:Enabled"</span> <span class="attr">value</span>=<span class="string">"false"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"ClientValidationEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"UnobtrusiveJavaScriptEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"EMAIL_PASSWORD"</span> <span class="attr">value</span>=<span class="string">"YourEmailPassword"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">appSettings</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>由于不同开发人员可能有不同的数据库连接字符串配置, 根据 .NET <code>ConfigurationManager</code> 提供了解决的方案. </p>
+<p><span id="use-configSource-attr"></span></p>
+<h2 id="使用-configSource-Attribute-把整体配置部分移动到单独的文件中"><a href="#使用-configSource-Attribute-把整体配置部分移动到单独的文件中" class="headerlink" title="使用 configSource Attribute 把整体配置部分移动到单独的文件中"></a>使用 configSource Attribute 把整体配置部分移动到单独的文件中</h2><p>我们可以添加单独的配置文件 ConnectionStrings.config, 并且在 Web.config 文件中的 <code>configSource</code> 特性中使用它.</p>
+<ul>
+<li><p>新建 ConnectionStrings.config 文件</p>
+</li>
+<li><p>把先面的内容添加到 ConnectionStrings.config 中 (不需要 xml 头声明, 只有 <code>connectionStrings</code> 标签, 然后在标签里添加 <code>&lt;add&gt;</code> 元素)</p>
+<p>  <strong>ConnectionStrings.config 文件例子:</strong> <label style="color: red;">这里面的 &lt;connectionStrings&gt; 中不要添加 configSource 标签, 否则报错 </label></p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">connectionStrings</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">add</span> <span class="attr">name</span>=<span class="string">"DefaultConnection"</span> <span class="attr">value</span>=<span class="string">"YourConnectionStringAndPassword"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">connectionStrings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改 Web.config 文件, 移除 <strong><connectionstrings></connectionstrings></strong> 下面的 <strong><add></add></strong> 元素, 在 <strong><connectionstrings></connectionstrings></strong> 便签中添加 <code>configSource</code> 特性, 值为新创建的文件 (ConnectionStrings.config)</p>
+<p>  <strong>例子:</strong></p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">connectionStrings</span> <span class="attr">configSource</span>=<span class="string">"ConnectionStrings.config"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">connectionStrings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>右键文件选择属性, 设置 <strong>Copy to Output Directory</strong> 为 <code>Copy if newer</code> 或者 <code>Copy always</code>.</p>
+</li>
+</ul>
+<p><strong>同以前访问连接字符串方式相同, 可直接使用如下代码访问:</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> conn = ConfigurationManager.ConnectionStrings[<span class="string">"DefaultConnection"</span>];</span><br><span class="line"><span class="keyword">string</span> connString = conn.ConnectionString;</span><br><span class="line"><span class="comment">// Etc...</span></span><br></pre></td></tr></table></figure>
+
+<p><span id="use-file-attr"></span></p>
+<h2 id="使用-File-Attribute-有选择的移动-Application-Settings-appSettings-标签下的设置-到外部文件"><a href="#使用-File-Attribute-有选择的移动-Application-Settings-appSettings-标签下的设置-到外部文件" class="headerlink" title="使用 File Attribute 有选择的移动 Application Settings (appSettings 标签下的设置) 到外部文件"></a>使用 File Attribute 有选择的移动 Application Settings (appSettings 标签下的设置) 到外部文件</h2><p>在 <code>&lt;appSettings&gt;</code> 标签里可以配置许多全局值供项目使用, 但有很多不需要提交到源码控制中 (如: 邮箱密码配置).<br>这种情况下, <code>&lt;appSettings&gt;</code> 标签里有一个特殊的 <code>file</code> 特性, 允许将一些配置放到独立的文件中.</p>
+<ul>
+<li><p>添加新的文件 <em>PrivateSettings.config</em>, 也不带 XML 头, 只包含 <code>&lt;appSettings&gt;</code> 标签和其里面的内容</p>
+<p>  <strong>PrivateSettings.config文件:</strong></p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">appSettings</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"MAIL_PASSWORD"</span> <span class="attr">value</span>=<span class="string">"123456"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">appSettings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>移除 Web.config 中 <code>&lt;appSettings&gt;</code> 标签里要变为私有的内容, 并且添加 <code>file</code> 特性, 值为 <em>PrivateSettings.config</em></p>
+<p><strong>修改后的 Web.config 文件:</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">appSettings</span> <span class="attr">file</span>=<span class="string">"PrivateSettings.config"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"owin:AppStartup"</span> <span class="attr">value</span>=<span class="string">"AspNetIdentity2ExtendingApplicationUser.Startup,AspNetIdentity2ExtendingApplicationUser"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"webpages:Version"</span> <span class="attr">value</span>=<span class="string">"3.0.0.0"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"webpages:Enabled"</span> <span class="attr">value</span>=<span class="string">"false"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"ClientValidationEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"UnobtrusiveJavaScriptEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">appSettings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>右键文件选择属性, 设置 <strong>Copy to Output Directory</strong> 为 <code>Copy if newer</code> 或者 <code>Copy always</code>.</p>
+</li>
+</ul>
+<p><strong>在项目中也可以直接使用如下代码来访问:</strong><br>  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> pwd = ConfigurationManager.AppSettings[<span class="string">"MAIL_PASSWORD"</span>];</span><br></pre></td></tr></table></figure></p>
+<p><span id="add-ignore"></span></p>
+<h2 id="在-gitignore-中添加特殊文件"><a href="#在-gitignore-中添加特殊文件" class="headerlink" title="在 .gitignore 中添加特殊文件"></a>在 .gitignore 中添加特殊文件</h2><p>Now we can add our Web.config file to source and commit, and add the two special files, ConnectionStrings.config and PrivateSettings.config to our .gitignore file, and commit away. When it’s time to push to a shared repo, our private information will stay private.</p>
+<p><span id="document-is-key"></span></p>
+<h2 id="Documentation-is-Key"><a href="#Documentation-is-Key" class="headerlink" title="Documentation is Key"></a>Documentation is Key</h2><p>Of course, when we take this type of approach, it will be helpful to other developers if our documentation clearly indicates what is going on here. We might do this in our project README file, and/or add some XML comments at each point in our modified Web.config informing others that they will need to add the proper files to their local version of the project, and what those files should contain.</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="/assets/img/favicon.jpg" height=300 width=300></img>
+                    <p>Bogerv</p>
+                    <span>Everything is gonna to be ok!</span>
+                    <dl>
+                        <dd><a href="https://github.com/bogerv" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">26 <p>Articles</p></a></li>
+                    <li><a href="/categories">6 <p>Categories</p></a></li>
+                    <li><a href="/tags">25 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-configSource-Attribute-把整体配置部分移动到单独的文件中"><span class="toc-number">1.</span> <span class="toc-text">使用 configSource Attribute 把整体配置部分移动到单独的文件中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-File-Attribute-有选择的移动-Application-Settings-appSettings-标签下的设置-到外部文件"><span class="toc-number">2.</span> <span class="toc-text">使用 File Attribute 有选择的移动 Application Settings (appSettings 标签下的设置) 到外部文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在-gitignore-中添加特殊文件"><span class="toc-number">3.</span> <span class="toc-text">在 .gitignore 中添加特殊文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Documentation-is-Key"><span class="toc-number">4.</span> <span class="toc-text">Documentation is Key</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            Bogerv
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+  }
+</script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/go/go.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Everything is gonna to be ok!", "Rome was not built in one day!"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>
