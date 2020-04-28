@@ -10,7 +10,7 @@
 
 ```zsh
 cd bogerv.github.io/themes
-git clone https://github.com/TriDiamond/hexo-theme-obsidian.git obsidian
+git clone https://github.com/bogerv/hexo-theme-obsidian.git obsidian
 ```
 
 ## 3. 将主题配置文件复制到主题文件夹下

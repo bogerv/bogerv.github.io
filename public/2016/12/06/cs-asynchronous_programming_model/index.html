@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang=en>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="也称为 IAsyncResult 模式, 异步操作需要使用 BeginOperationName 和 EndOperationName 方法. (例如, FileStream类提供了BeginRead 和 EndRead (Read方法的异步版本) 方法来异步读取字节).  从 .NET Framework 4.0 开始, 任务并行库为异步和并行编程提供了新的模式. 详见: Task Parall">
+<meta name="keywords" content="async,.net,IAsyncResult">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Asynchronous Programming Model (APM)">
+<meta property="og:url" content="http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/index.html">
+<meta property="og:site_name" content="Bogerv">
+<meta property="og:description" content="也称为 IAsyncResult 模式, 异步操作需要使用 BeginOperationName 和 EndOperationName 方法. (例如, FileStream类提供了BeginRead 和 EndRead (Read方法的异步版本) 方法来异步读取字节).  从 .NET Framework 4.0 开始, 任务并行库为异步和并行编程提供了新的模式. 详见: Task Parall">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-11T17:36:06.360Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Asynchronous Programming Model (APM)">
+<meta name="twitter:description" content="也称为 IAsyncResult 模式, 异步操作需要使用 BeginOperationName 和 EndOperationName 方法. (例如, FileStream类提供了BeginRead 和 EndRead (Read方法的异步版本) 方法来异步读取字节).  从 .NET Framework 4.0 开始, 任务并行库为异步和并行编程提供了新的模式. 详见: Task Parall">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Asynchronous Programming Model (APM)</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/go/">Go</a></li>
+         
+          <li><a href="/categories/rust/">Rust</a></li>
+         
+          <li><a href="/categories/dotnet/">.Net</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2016/12/07/event-based_asynchronous_pattern/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2016/12/05/cs-asynchronous_program_in_dotnet/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&text=Asynchronous Programming Model (APM)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&title=Asynchronous Programming Model (APM)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&is_video=false&description=Asynchronous Programming Model (APM)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Asynchronous Programming Model (APM)&body=Check out this article: http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&title=Asynchronous Programming Model (APM)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&title=Asynchronous Programming Model (APM)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&title=Asynchronous Programming Model (APM)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&title=Asynchronous Programming Model (APM)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&name=Asynchronous Programming Model (APM)&description=&lt;p&gt;也称为 IAsyncResult 模式, 异步操作需要使用 Begin&lt;em&gt;OperationName&lt;/em&gt; 和 End&lt;em&gt;OperationName&lt;/em&gt; 方法. (例如, FileStream类提供了BeginRead 和 EndRead (Read方法的异步版本) 方法来异步读取字节).&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;从 .NET Framework 4.0 开始, 任务并行库为异步和并行编程提供了新的模式. 详见: &lt;a href=&quot;https://msdn.microsoft.com/zh-cn/library/dd460717(v=vs.110).aspx&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Task Parallel Libary (TPL)&lt;/a&gt; 和 &lt;a href=&quot;https://msdn.microsoft.com/zh-cn/library/hh873175(v=vs.110).aspx&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Task-based Asynchronous Pattern (TAP)&lt;/a&gt;&lt;br&gt;因此, 不再建议使用此种模式.&lt;/p&gt;
+&lt;/blockquote&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&t=Asynchronous Programming Model (APM)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始一个异步操作"><span class="toc-number">1.</span> <span class="toc-text">开始一个异步操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结束异步操作"><span class="toc-number">2.</span> <span class="toc-text">结束异步操作</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Asynchronous Programming Model (APM)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Bogerv</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-12-06T02:55:08.000Z" itemprop="datePublished">2016-12-06</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/dotnet/">dotnet</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/net/">.net</a>, <a class="tag-link" href="/tags/IAsyncResult/">IAsyncResult</a>, <a class="tag-link" href="/tags/async/">async</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>也称为 IAsyncResult 模式, 异步操作需要使用 Begin<em>OperationName</em> 和 End<em>OperationName</em> 方法. (例如, FileStream类提供了BeginRead 和 EndRead (Read方法的异步版本) 方法来异步读取字节).</p>
+<blockquote>
+<p>从 .NET Framework 4.0 开始, 任务并行库为异步和并行编程提供了新的模式. 详见: <a href="https://msdn.microsoft.com/zh-cn/library/dd460717(v=vs.110).aspx" target="_blank" rel="noopener">Task Parallel Libary (TPL)</a> 和 <a href="https://msdn.microsoft.com/zh-cn/library/hh873175(v=vs.110).aspx" target="_blank" rel="noopener">Task-based Asynchronous Pattern (TAP)</a><br>因此, 不再建议使用此种模式.</p>
+</blockquote>
+<a id="more"></a>
+
+<p>在调用完 <strong>Begin*</strong>OperationName* 后, 应用程序可以继续在调用线程上执行其他操作, 同时异步操作在另外一个线程上执行. 每次调用 <strong>Begin*</strong>OperationName* 时, 应用程序还应调用 <strong>End*</strong>OperationName* 来获取操作的结果.</p>
+<h2 id="开始一个异步操作"><a href="#开始一个异步操作" class="headerlink" title="开始一个异步操作"></a>开始一个异步操作</h2><p><strong>Begin*</strong>OperationName* 方法开始异步操作 <em>OperationName</em>, 并返回实现 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult(v=vs.110).aspx" target="_blank" rel="noopener">IAsyncResult</a> 接口的对象. <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult(v=vs.110).aspx" target="_blank" rel="noopener">IAsyncResult</a>存储有关异步操作信息. 异步操作信息如下:</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th align="center">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.asyncstate(v=vs.110).aspx" target="_blank" rel="noopener">AsyncState</a></td>
+<td align="center">一个特定于应用程序的可选对象, 其中包含有关异步操作的信息</td>
+</tr>
+<tr>
+<td><a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.asyncwaithandle(v=vs.110).aspx" target="_blank" rel="noopener">AsyncWaitHandle</a></td>
+<td align="center">一个 <a href="https://msdn.microsoft.com/zh-cn/library/system.threading.waithandle(v=vs.110).aspx" target="_blank" rel="noopener">WaitHandle</a>, 可用来在异步操作完成之前阻止应用程序执行</td>
+</tr>
+<tr>
+<td><a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.completedsynchronously(v=vs.110).aspx" target="_blank" rel="noopener">CompletedSynchronously</a></td>
+<td align="center">指示异步操作是否是在用于调用 <strong>Begin*</strong>OperationName* 的线程上完成, 而不是在单独的 ThreadPool 线程上完成</td>
+</tr>
+<tr>
+<td><a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.iscompleted(v=vs.110).aspx" target="_blank" rel="noopener">IsCompleted</a></td>
+<td align="center">指示异步操作是否完成</td>
+</tr>
+</tbody></table>
+<p><strong>Begin*</strong>OperationName* 方法使用该方法同步版本签名中通过值或引用传递的任何参数. 并且不包含任何输出参数. <strong>Begin*</strong>OperationName* 方法签名还包含两个附加参数. </p>
+<ul>
+<li>第一个参数定义了一个 <a href="https://msdn.microsoft.com/zh-cn/library/system.asynccallback(v=vs.110).aspx" target="_blank" rel="noopener">AsyncCallback</a> 委托, 当异步操作完成时调用委托所引用的方法. 操作完成时, 如果不想调用任何方法, 可以指定为 null.</li>
+<li>第二个参数是用户自定义对象, 此对象可用来向异步操作完成时调用的方法传递应用程序特定的状态信息.</li>
+</ul>
+<p>如果 <strong>Begin*</strong>OperationName* 方法还采用其他一些操作特定的参数 (例如, 一个用于存储从文件读取的字节的字节数组), 则 <a href="https://msdn.microsoft.com/zh-cn/library/system.asynccallback(v=vs.110).aspx" target="_blank" rel="noopener">AsyncCallback</a> 和应用程序状态对象将是 <strong>Begin*</strong>OperationName* 方法签名中的最后两个参数</p>
+<p><strong>Begin*</strong>OperationName* 立即返回对调用线程 (主线程) 的控制. 如果 <strong>Begin*</strong>OperationName* 方法抛出异常, 则会在开始异步操作之前抛出异常, 并且不会调用回调方法.</p>
+<h2 id="结束异步操作"><a href="#结束异步操作" class="headerlink" title="结束异步操作"></a>结束异步操作</h2><p><strong>End*</strong>OperationName* 方法可结束异步操作 <em>OperationName</em>. <strong>End*</strong>OperationName* 方法的返回值与其同步对应方法的返回值类型相同, 并且是特定于异步操作的. 例如, EndRead 方法返回从 <a href="https://msdn.microsoft.com/zh-cn/library/system.io.filestream(v=vs.110).aspx" target="_blank" rel="noopener">FileStream</a> 读取的字节数, <a href="https://msdn.microsoft.com/zh-cn/library/system.net.dns.endgethostbyname(v=vs.110).aspx" target="_blank" rel="noopener">EndGetHostByName</a> 方法返回包含有关主机的信息的 <a href="https://msdn.microsoft.com/zh-cn/library/system.net.iphostentry(v=vs.110).aspx" target="_blank" rel="noopener">IPHostEntry</a> 对象. <strong>End*</strong>OperationName* 方法采用该方法同步版本的签名中声明的所有输出参数或引用参数. 除了来自同步方法的参数外, <strong>End*</strong>OperationName* 方法还包括 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult(v=vs.110).aspx" target="_blank" rel="noopener">IAsyncResult</a> 参数. 调用方必须将对应调用返回的实例传递给 BeginOperationName.<br>如果调用 <strong>End*</strong>OperationName* 时 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult(v=vs.110).aspx" target="_blank" rel="noopener">IAsyncResult</a> 对象表示的异步操作尚未完成, 则 <strong>End*</strong>OperationName* 将在异步操作完成之前阻止调用线程. 异步操作引发的异常是从 <strong>End*</strong>OperationName* 方法引发的. 未定义多次使用同一 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult(v=vs.110).aspx" target="_blank" rel="noopener">IAsyncResult</a> 调用 <strong>End*</strong>OperationName* 方法的效果. 同样, 也未定义使用不是相关 Begin 方法返回的 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult(v=vs.110).aspx" target="_blank" rel="noopener">IAsyncResult</a> 调用 <strong>End*</strong>OperationName* 方法的效果. </p>
+<blockquote>
+<p>对于这两种未定义的情况, 实施者应考虑引发 <a href="https://msdn.microsoft.com/zh-cn/library/system.invalidoperationexception(v=vs.110).aspx" target="_blank" rel="noopener">InvalidOperationException</a>. </p>
+</blockquote>
+<blockquote>
+<p>此设计模式的实施者应通知调用方异步操作已通过以下步骤完成: 将 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.iscompleted(v=vs.110).aspx" target="_blank" rel="noopener">IsCompleted</a> 设置为 true, 调用异步回调方法 ( 如果已指定一个回调方法 ), 然后发送 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.asyncwaithandle(v=vs.110).aspx" target="_blank" rel="noopener">AsyncWaitHandle</a> 信号. </p>
+</blockquote>
+<p>对于访问异步操作的结果, 应用程序开发人员有若干种设计选择. 正确的选择取决于应用程序是否有可以在操作完成时执行的指令. 如果应用程序在接收到异步操作结果之前不能进行任何其他工作, 则必须在获得这些结果之前先阻止该应用程序进行其他工作. 若要在异步操作完成之前阻止应用程序, 可以使用下列方法之一: </p>
+<ul>
+<li>从应用程序的主线程调用 <strong>End*</strong>OperationName*, 阻止应用程序执行, 直到操作完成. 有关演示此方法的示例, 请参阅<a href="https://msdn.microsoft.com/zh-cn/library/ms228967(v=vs.110).aspx" target="_blank" rel="noopener">Blocking Application Execution by Ending an Async Operation</a>. </li>
+<li>使用 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.asyncwaithandle(v=vs.110).aspx" target="_blank" rel="noopener">AsyncWaitHandle</a> 来阻止应用程序执行, 直到一个或多个操作完成. 有关演示此方法的示例, 请参阅<a href="https://msdn.microsoft.com/zh-cn/library/ms228962(v=vs.110).aspx" target="_blank" rel="noopener">Blocking Application Execution Using an AsyncWaitHandle</a>. </li>
+</ul>
+<p>在异步操作完成时不需要阻止的应用程序可使用下列方法之一: </p>
+<ul>
+<li>按以下方式轮询操作完成状态: 定期检查 <a href="https://msdn.microsoft.com/zh-cn/library/system.iasyncresult.iscompleted(v=vs.110).aspx" target="_blank" rel="noopener">IsCompleted</a> 属性, 并在操作完成后调用 <strong>End*</strong>OperationName*. 有关演示此方法的示例, 请参阅<a href="https://msdn.microsoft.com/zh-cn/library/ms228968(v=vs.110).aspx" target="_blank" rel="noopener">Polling for the Status of an Asynchronous Operation</a>. </li>
+<li>使用 <a href="https://msdn.microsoft.com/zh-cn/library/system.asynccallback(v=vs.110).aspx" target="_blank" rel="noopener">AsyncCallback</a> 委托来指定要在操作完成时调用的方法. 有关演示此方法的示例, 请参阅<a href="https://msdn.microsoft.com/zh-cn/library/ms228972(v=vs.110).aspx" target="_blank" rel="noopener">Using an AsyncCallback Delegate to End an Asynchronous Operation</a>. </li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/go/">Go</a></li>
+         
+          <li><a href="/categories/rust/">Rust</a></li>
+         
+          <li><a href="/categories/dotnet/">.Net</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始一个异步操作"><span class="toc-number">1.</span> <span class="toc-text">开始一个异步操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结束异步操作"><span class="toc-number">2.</span> <span class="toc-text">结束异步操作</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&text=Asynchronous Programming Model (APM)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&title=Asynchronous Programming Model (APM)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&is_video=false&description=Asynchronous Programming Model (APM)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Asynchronous Programming Model (APM)&body=Check out this article: http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&title=Asynchronous Programming Model (APM)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&title=Asynchronous Programming Model (APM)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&title=Asynchronous Programming Model (APM)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&title=Asynchronous Programming Model (APM)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&name=Asynchronous Programming Model (APM)&description=&lt;p&gt;也称为 IAsyncResult 模式, 异步操作需要使用 Begin&lt;em&gt;OperationName&lt;/em&gt; 和 End&lt;em&gt;OperationName&lt;/em&gt; 方法. (例如, FileStream类提供了BeginRead 和 EndRead (Read方法的异步版本) 方法来异步读取字节).&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;从 .NET Framework 4.0 开始, 任务并行库为异步和并行编程提供了新的模式. 详见: &lt;a href=&quot;https://msdn.microsoft.com/zh-cn/library/dd460717(v=vs.110).aspx&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Task Parallel Libary (TPL)&lt;/a&gt; 和 &lt;a href=&quot;https://msdn.microsoft.com/zh-cn/library/hh873175(v=vs.110).aspx&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Task-based Asynchronous Pattern (TAP)&lt;/a&gt;&lt;br&gt;因此, 不再建议使用此种模式.&lt;/p&gt;
+&lt;/blockquote&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://bogerv.wang/2016/12/06/cs-asynchronous_programming_model/&t=Asynchronous Programming Model (APM)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2017-2020
+    Bogerv
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/go/">Go</a></li>
+         
+          <li><a href="/categories/rust/">Rust</a></li>
+         
+          <li><a href="/categories/dotnet/">.Net</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<!-- clipboard -->
+
+  <script src="/lib/clipboard/clipboard.min.js"></script>
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

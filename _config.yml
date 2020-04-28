@@ -65,7 +65,9 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 # theme: yilia
-theme: obsidian
+theme: cactus 
+theme_config:
+  colorscheme: light
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
