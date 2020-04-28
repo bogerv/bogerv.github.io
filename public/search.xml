@@ -299,11 +299,11 @@
       
         <tags>
             
+            <tag> IAsyncResult </tag>
+            
             <tag> async </tag>
             
             <tag> .net </tag>
-            
-            <tag> IAsyncResult </tag>
             
         </tags>
       
@@ -510,25 +510,6 @@
     
     
     <entry>
-      <title>git pull时保存或删除凭证</title>
-      <link href="/2016/10/19/git-command/"/>
-      <url>/2016/10/19/git-command/</url>
-      
-        <content type="html"><![CDATA[<h2 id="保存Git凭证"><a href="#保存Git凭证" class="headerlink" title="保存Git凭证:"></a>保存Git凭证:</h2><p><code>git config --local credential.helperstore</code></p><h2 id="删除已经保存的凭证"><a href="#删除已经保存的凭证" class="headerlink" title="删除已经保存的凭证:"></a>删除已经保存的凭证:</h2><p><code>git config --local credential.helperremove</code></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> git </category>
-          
-      </categories>
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>beego Config 说明</title>
       <link href="/2016/10/19/go-beego-config/"/>
       <url>/2016/10/19/go-beego-config/</url>
@@ -539,6 +520,25 @@
       <categories>
           
           <category> go </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>git pull时保存或删除凭证</title>
+      <link href="/2016/10/19/git-command/"/>
+      <url>/2016/10/19/git-command/</url>
+      
+        <content type="html"><![CDATA[<h2 id="保存Git凭证"><a href="#保存Git凭证" class="headerlink" title="保存Git凭证:"></a>保存Git凭证:</h2><p><code>git config --local credential.helperstore</code></p><h2 id="删除已经保存的凭证"><a href="#删除已经保存的凭证" class="headerlink" title="删除已经保存的凭证:"></a>删除已经保存的凭证:</h2><p><code>git config --local credential.helperremove</code></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> git </category>
           
       </categories>
       
