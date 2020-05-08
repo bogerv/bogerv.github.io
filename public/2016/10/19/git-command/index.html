@@ -6,18 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="保存Git凭证:git config --local credential.helper store 删除已经保存的凭证:git config --local credential.helper remove">
+    <meta name="description" content="设置用户名邮箱   12git config --system user.name &amp;quot;bogerv&amp;quot;git config --system user.email &amp;quot;bogerv@163.com&amp;quot;  设置别名   1234567git config --global alias.st statusgit config --global alias.co ch">
 <meta name="keywords" content="go,.net">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git pull时保存或删除凭证">
 <meta property="og:url" content="http://bogerv.wang/2016/10/19/git-command/index.html">
 <meta property="og:site_name" content="Bogerv">
-<meta property="og:description" content="保存Git凭证:git config --local credential.helper store 删除已经保存的凭证:git config --local credential.helper remove">
+<meta property="og:description" content="设置用户名邮箱   12git config --system user.name &amp;quot;bogerv&amp;quot;git config --system user.email &amp;quot;bogerv@163.com&amp;quot;  设置别名   1234567git config --global alias.st statusgit config --global alias.co ch">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-03-15T15:54:18.037Z">
+<meta property="og:updated_time" content="2020-05-08T16:54:47.676Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git pull时保存或删除凭证">
-<meta name="twitter:description" content="保存Git凭证:git config --local credential.helper store 删除已经保存的凭证:git config --local credential.helper remove">
+<meta name="twitter:description" content="设置用户名邮箱   12git config --system user.name &amp;quot;bogerv&amp;quot;git config --system user.email &amp;quot;bogerv@163.com&amp;quot;  设置别名   1234567git config --global alias.st statusgit config --global alias.co ch">
     
     
         
@@ -80,7 +80,7 @@
     <span id="actions">
       <ul>
         
-        <li><a class="icon" href="/2016/10/19/go-beego-config/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        <li><a class="icon" href="/2016/10/28/gulp_in_visualStudio/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
         <li><a class="icon" href="/2016/10/19/steps/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
@@ -111,7 +111,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#保存Git凭证"><span class="toc-number">1.</span> <span class="toc-text">保存Git凭证:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除已经保存的凭证"><span class="toc-number">2.</span> <span class="toc-text">删除已经保存的凭证:</span></a></li></ol>
+      
     </div>
   </span>
 </div>
@@ -155,10 +155,27 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="保存Git凭证"><a href="#保存Git凭证" class="headerlink" title="保存Git凭证:"></a>保存Git凭证:</h2><p><code>git config --local credential.helper
-store</code></p>
-<h2 id="删除已经保存的凭证"><a href="#删除已经保存的凭证" class="headerlink" title="删除已经保存的凭证:"></a>删除已经保存的凭证:</h2><p><code>git config --local credential.helper
-remove</code></p>
+    <ul>
+<li><p>设置用户名邮箱</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --system user.name &quot;bogerv&quot;</span><br><span class="line">git config --system user.email &quot;bogerv@163.com&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置别名</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git config --global alias.st status</span><br><span class="line">git config --global alias.co checkout</span><br><span class="line">git config --global alias.br branch</span><br><span class="line">git config --global alias.ci commit</span><br><span class="line">git config --global alias.st status</span><br><span class="line">git config --global alias.mg merge</span><br><span class="line">git config --global alias.last &quot;log -1 HEAD&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存Git凭证</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --local credential.helper store</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除已经保存的凭证</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --local credential.helper remove</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>同步已删除分支</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote prune origin</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解决github图片不显示问题</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># 修改 hosts 文件</span><br><span class="line"># windows: C:\Windows\System32\drivers\etc</span><br><span class="line"># Mac: `sudo vim /etc/hosts`</span><br><span class="line"># GitHub Start</span><br><span class="line">192.30.253.112    github.com</span><br><span class="line">192.30.253.119    gist.github.com</span><br><span class="line">151.101.184.133    assets-cdn.github.com</span><br><span class="line">151.101.184.133    raw.githubusercontent.com</span><br><span class="line">151.101.184.133    gist.githubusercontent.com</span><br><span class="line">151.101.184.133    cloud.githubusercontent.com</span><br><span class="line">151.101.184.133    camo.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars0.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars1.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars2.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars3.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars4.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars5.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars6.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars7.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars8.githubusercontent.com</span><br><span class="line"># GitHub End</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
 
   </div>
 </article>
@@ -192,7 +209,7 @@ remove</code></p>
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#保存Git凭证"><span class="toc-number">1.</span> <span class="toc-text">保存Git凭证:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除已经保存的凭证"><span class="toc-number">2.</span> <span class="toc-text">删除已经保存的凭证:</span></a></li></ol>
+      
     </div>
 
     <div id="share-footer" style="display: none">
