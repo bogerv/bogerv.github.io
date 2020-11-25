@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang=en>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="前言想必以前我们都有过将 ASP.NET MVC 项目部署到远程服务器的经历, 最普通也最麻烦的方法就是将发布后的项目打包上传到远程服务器, 操作起来非常不方便. VS 其实从很早就支持将项目 Publish 到远程的操作.  现在也有很多自动化部署工具, Jenkins, PowerShell 脚本等等, 暂不讨论  部署环境Windows Server 2008 R2 EnterpriseVi">
+<meta name="keywords" content="ASP.NET MVC,Visual Stduio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 VS 中远程部署 ASP.NET MVC 项目到服务器">
+<meta property="og:url" content="http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/index.html">
+<meta property="og:site_name" content="Bogerv">
+<meta property="og:description" content="前言想必以前我们都有过将 ASP.NET MVC 项目部署到远程服务器的经历, 最普通也最麻烦的方法就是将发布后的项目打包上传到远程服务器, 操作起来非常不方便. VS 其实从很早就支持将项目 Publish 到远程的操作.  现在也有很多自动化部署工具, Jenkins, PowerShell 脚本等等, 暂不讨论  部署环境Windows Server 2008 R2 EnterpriseVi">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/1.server_manager_add_features.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/2.iis_management_service.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/3.as_service_started.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/4.error.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/5.iis_home.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/6.management_service_setting.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/7.iis_user.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/8.iis_user_add.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/9.iis_user_name_pass.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/10.iis_user_permission.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/11.iis_allow_user.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/12.select_user.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/17.floder_peimission.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/18.full_setting.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/13.pubish.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/15.connection.png">
+<meta property="og:image" content="http://bogerv.wang/assets/webdeploy/16.check.png">
+<meta property="og:updated_time" content="2020-11-25T17:39:58.870Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在 VS 中远程部署 ASP.NET MVC 项目到服务器">
+<meta name="twitter:description" content="前言想必以前我们都有过将 ASP.NET MVC 项目部署到远程服务器的经历, 最普通也最麻烦的方法就是将发布后的项目打包上传到远程服务器, 操作起来非常不方便. VS 其实从很早就支持将项目 Publish 到远程的操作.  现在也有很多自动化部署工具, Jenkins, PowerShell 脚本等等, 暂不讨论  部署环境Windows Server 2008 R2 EnterpriseVi">
+<meta name="twitter:image" content="http://bogerv.wang/assets/webdeploy/1.server_manager_add_features.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>在 VS 中远程部署 ASP.NET MVC 项目到服务器</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/go/">Go</a></li>
+         
+          <li><a href="/categories/rust/">Rust</a></li>
+         
+          <li><a href="/categories/dotnet/">.Net</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/03/18/cs-covarianceAndContravariance/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/01/18/elasticsearch-windows-1_install_plugins/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&text=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&title=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&is_video=false&description=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=在 VS 中远程部署 ASP.NET MVC 项目到服务器&body=Check out this article: http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&title=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&title=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&title=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&title=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&name=在 VS 中远程部署 ASP.NET MVC 项目到服务器&description=&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;想必以前我们都有过将 ASP.NET MVC 项目部署到远程服务器的经历, 最普通也最麻烦的方法就是将发布后的项目打包上传到远程服务器, 操作起来非常不方便. VS 其实从很早就支持将项目 Publish 到远程的操作.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;现在也有很多自动化部署工具, Jenkins, PowerShell 脚本等等, 暂不讨论&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;部署环境&quot;&gt;&lt;a href=&quot;#部署环境&quot; class=&quot;headerlink&quot; title=&quot;部署环境&quot;&gt;&lt;/a&gt;部署环境&lt;/h2&gt;&lt;p&gt;Windows Server 2008 R2 Enterprise&lt;br&gt;Visual Studio 13 +&lt;/p&gt;
+&lt;h2 id=&quot;配置远程服务器&quot;&gt;&lt;a href=&quot;#配置远程服务器&quot; class=&quot;headerlink&quot; title=&quot;配置远程服务器&quot;&gt;&lt;/a&gt;配置远程服务器&lt;/h2&gt;&lt;h3 id=&quot;安装-Web-Deploy&quot;&gt;&lt;a href=&quot;#安装-Web-Deploy&quot; class=&quot;headerlink&quot; title=&quot;安装 Web Deploy&quot;&gt;&lt;/a&gt;安装 Web Deploy&lt;/h3&gt;&lt;p&gt;Web Deploy, 下载地址: &lt;a href=&quot;http://www.iis.net/downloads/microsoft/web-deploy&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;http://www.iis.net/downloads/microsoft/web-deploy&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;安装 3.5 以上版本, 否则发布项目时会出项 “无法连接到远程服务器” 的错误提示&lt;/p&gt;
+&lt;/blockquote&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&t=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署环境"><span class="toc-number">2.</span> <span class="toc-text">部署环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置远程服务器"><span class="toc-number">3.</span> <span class="toc-text">配置远程服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-Web-Deploy"><span class="toc-number">3.1.</span> <span class="toc-text">安装 Web Deploy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启用-IIS-的管理服务"><span class="toc-number">3.2.</span> <span class="toc-text">启用 IIS 的管理服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IIS-设置"><span class="toc-number">3.3.</span> <span class="toc-text">IIS 设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置远部署项目的账户"><span class="toc-number">3.4.</span> <span class="toc-text">配置远部署项目的账户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置站点用户权限"><span class="toc-number">3.5.</span> <span class="toc-text">配置站点用户权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为站点目录添加本地服务的修改权限"><span class="toc-number">3.6.</span> <span class="toc-text">为站点目录添加本地服务的修改权限</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-Visual-Studio-2015-远程部署项目"><span class="toc-number">4.</span> <span class="toc-text">使用 Visual Studio 2015 远程部署项目</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        在 VS 中远程部署 ASP.NET MVC 项目到服务器
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Bogerv</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-02-22T12:35:03.000Z" itemprop="datePublished">2017-02-22</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/dotnet/">dotnet</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/ASP-NET-MVC/">ASP.NET MVC</a>, <a class="tag-link" href="/tags/Visual-Stduio/">Visual Stduio</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>想必以前我们都有过将 ASP.NET MVC 项目部署到远程服务器的经历, 最普通也最麻烦的方法就是将发布后的项目打包上传到远程服务器, 操作起来非常不方便. VS 其实从很早就支持将项目 Publish 到远程的操作.</p>
+<blockquote>
+<p>现在也有很多自动化部署工具, Jenkins, PowerShell 脚本等等, 暂不讨论</p>
+</blockquote>
+<h2 id="部署环境"><a href="#部署环境" class="headerlink" title="部署环境"></a>部署环境</h2><p>Windows Server 2008 R2 Enterprise<br>Visual Studio 13 +</p>
+<h2 id="配置远程服务器"><a href="#配置远程服务器" class="headerlink" title="配置远程服务器"></a>配置远程服务器</h2><h3 id="安装-Web-Deploy"><a href="#安装-Web-Deploy" class="headerlink" title="安装 Web Deploy"></a>安装 Web Deploy</h3><p>Web Deploy, 下载地址: <a href="http://www.iis.net/downloads/microsoft/web-deploy" target="_blank" rel="noopener">http://www.iis.net/downloads/microsoft/web-deploy</a></p>
+<blockquote>
+<p>安装 3.5 以上版本, 否则发布项目时会出项 “无法连接到远程服务器” 的错误提示</p>
+</blockquote>
+<a id="more"></a>
+
+<h3 id="启用-IIS-的管理服务"><a href="#启用-IIS-的管理服务" class="headerlink" title="启用 IIS 的管理服务"></a>启用 IIS 的管理服务</h3><p>在管理服务中添加 IIS 的 Management Service 功能.</p>
+<p><img src="/assets/webdeploy/1.server_manager_add_features.png" alt></p>
+<p><img src="/assets/webdeploy/2.iis_management_service.png" alt></p>
+<p>安装完成之后, 确保在 “服务” 中将其启动:</p>
+<p><img src="/assets/webdeploy/3.as_service_started.png" alt></p>
+<blockquote>
+<p>如果该服务没有启动, 或者没有启用 “Management Service” 功能, 则在使用 Web Deploy 部署项目时会遇到如下错误: <img src="/assets/webdeploy/4.error.png" alt></p>
+</blockquote>
+<h3 id="IIS-设置"><a href="#IIS-设置" class="headerlink" title="IIS 设置"></a>IIS 设置</h3><p>启用管理服务后, 进入 IIS, 会多出 Management Service 选项:</p>
+<p><img src="/assets/webdeploy/5.iis_home.png" alt></p>
+<p>双击进行配置:</p>
+<p><img src="/assets/webdeploy/6.management_service_setting.png" alt></p>
+<h3 id="配置远部署项目的账户"><a href="#配置远部署项目的账户" class="headerlink" title="配置远部署项目的账户"></a>配置远部署项目的账户</h3><p>双击 IIS Manager Users:</p>
+<p><img src="/assets/webdeploy/7.iis_user.png" alt></p>
+<p>点击 Add User…:</p>
+<p><img src="/assets/webdeploy/8.iis_user_add.png" alt></p>
+<p>输入用户名密码:</p>
+<blockquote>
+<p>在 VS 中发布是也需要此次输入的用户名和密码</p>
+</blockquote>
+<p><img src="/assets/webdeploy/9.iis_user_name_pass.png" alt></p>
+<h3 id="配置站点用户权限"><a href="#配置站点用户权限" class="headerlink" title="配置站点用户权限"></a>配置站点用户权限</h3><p>点击要发布的站点, 然后选择 IIS Manager Persmissions:</p>
+<p><img src="/assets/webdeploy/10.iis_user_permission.png" alt></p>
+<p>之后点击 “Allow User” :</p>
+<p><img src="/assets/webdeploy/11.iis_allow_user.png" alt></p>
+<p>将之前添加的 test 用户加入:</p>
+<p><img src="/assets/webdeploy/12.select_user.png" alt></p>
+<h3 id="为站点目录添加本地服务的修改权限"><a href="#为站点目录添加本地服务的修改权限" class="headerlink" title="为站点目录添加本地服务的修改权限"></a>为站点目录添加本地服务的修改权限</h3><p>“LOCAL SERVICE” 账户要有修改 项目发布文件夹 的权限:</p>
+<p><img src="/assets/webdeploy/17.floder_peimission.png" alt></p>
+<p><img src="/assets/webdeploy/18.full_setting.png" alt></p>
+<h2 id="使用-Visual-Studio-2015-远程部署项目"><a href="#使用-Visual-Studio-2015-远程部署项目" class="headerlink" title="使用 Visual Studio 2015 远程部署项目"></a>使用 Visual Studio 2015 远程部署项目</h2><p>新建一个配置文件:</p>
+<p><img src="/assets/webdeploy/13.pubish.png" alt></p>
+<p>配置 Web Deploy:</p>
+<p><img src="/assets/webdeploy/15.connection.png" alt></p>
+<p>点击检查就可以了:</p>
+<p><img src="/assets/webdeploy/16.check.png" alt></p>
+<blockquote>
+<p>默认会在本地浏览器打开</p>
+</blockquote>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/go/">Go</a></li>
+         
+          <li><a href="/categories/rust/">Rust</a></li>
+         
+          <li><a href="/categories/dotnet/">.Net</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署环境"><span class="toc-number">2.</span> <span class="toc-text">部署环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置远程服务器"><span class="toc-number">3.</span> <span class="toc-text">配置远程服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-Web-Deploy"><span class="toc-number">3.1.</span> <span class="toc-text">安装 Web Deploy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启用-IIS-的管理服务"><span class="toc-number">3.2.</span> <span class="toc-text">启用 IIS 的管理服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IIS-设置"><span class="toc-number">3.3.</span> <span class="toc-text">IIS 设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置远部署项目的账户"><span class="toc-number">3.4.</span> <span class="toc-text">配置远部署项目的账户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置站点用户权限"><span class="toc-number">3.5.</span> <span class="toc-text">配置站点用户权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为站点目录添加本地服务的修改权限"><span class="toc-number">3.6.</span> <span class="toc-text">为站点目录添加本地服务的修改权限</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-Visual-Studio-2015-远程部署项目"><span class="toc-number">4.</span> <span class="toc-text">使用 Visual Studio 2015 远程部署项目</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&text=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&title=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&is_video=false&description=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=在 VS 中远程部署 ASP.NET MVC 项目到服务器&body=Check out this article: http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&title=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&title=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&title=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&title=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&name=在 VS 中远程部署 ASP.NET MVC 项目到服务器&description=&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;想必以前我们都有过将 ASP.NET MVC 项目部署到远程服务器的经历, 最普通也最麻烦的方法就是将发布后的项目打包上传到远程服务器, 操作起来非常不方便. VS 其实从很早就支持将项目 Publish 到远程的操作.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;现在也有很多自动化部署工具, Jenkins, PowerShell 脚本等等, 暂不讨论&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;部署环境&quot;&gt;&lt;a href=&quot;#部署环境&quot; class=&quot;headerlink&quot; title=&quot;部署环境&quot;&gt;&lt;/a&gt;部署环境&lt;/h2&gt;&lt;p&gt;Windows Server 2008 R2 Enterprise&lt;br&gt;Visual Studio 13 +&lt;/p&gt;
+&lt;h2 id=&quot;配置远程服务器&quot;&gt;&lt;a href=&quot;#配置远程服务器&quot; class=&quot;headerlink&quot; title=&quot;配置远程服务器&quot;&gt;&lt;/a&gt;配置远程服务器&lt;/h2&gt;&lt;h3 id=&quot;安装-Web-Deploy&quot;&gt;&lt;a href=&quot;#安装-Web-Deploy&quot; class=&quot;headerlink&quot; title=&quot;安装 Web Deploy&quot;&gt;&lt;/a&gt;安装 Web Deploy&lt;/h3&gt;&lt;p&gt;Web Deploy, 下载地址: &lt;a href=&quot;http://www.iis.net/downloads/microsoft/web-deploy&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;http://www.iis.net/downloads/microsoft/web-deploy&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;安装 3.5 以上版本, 否则发布项目时会出项 “无法连接到远程服务器” 的错误提示&lt;/p&gt;
+&lt;/blockquote&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://bogerv.wang/2017/02/22/cs-vs_remote_deployment_webapp/&t=在 VS 中远程部署 ASP.NET MVC 项目到服务器"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2017-2020
+    Bogerv
+    <a href="http://beian.miit.gov.cn/" target="_blank">京ICP备20022301号-1</a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/go/">Go</a></li>
+         
+          <li><a href="/categories/rust/">Rust</a></li>
+         
+          <li><a href="/categories/dotnet/">.Net</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<!-- clipboard -->
+
+  <script src="/lib/clipboard/clipboard.min.js"></script>
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

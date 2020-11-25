@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang=en>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="C# 中的协变性、逆变性和不变性协变和逆变的概念&amp;ensp; 协变性: 子类转化为父类 string -&amp;gt; object  逆变性: 父类强制转换为子类 object -&amp;gt; string 或者 object -&amp;gt; (object)string  不变性: 既不可以协变也不可以逆变 (List || 自定义泛型类型不加 out 或 in 修饰)   泛型类型的可变性泛型修饰符 ou">
+<meta name="keywords" content="C# Syntax">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C# 中的协变性、逆变性和不变性">
+<meta property="og:url" content="http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/index.html">
+<meta property="og:site_name" content="Bogerv">
+<meta property="og:description" content="C# 中的协变性、逆变性和不变性协变和逆变的概念&amp;ensp; 协变性: 子类转化为父类 string -&amp;gt; object  逆变性: 父类强制转换为子类 object -&amp;gt; string 或者 object -&amp;gt; (object)string  不变性: 既不可以协变也不可以逆变 (List || 自定义泛型类型不加 out 或 in 修饰)   泛型类型的可变性泛型修饰符 ou">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-11-25T17:39:58.870Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C# 中的协变性、逆变性和不变性">
+<meta name="twitter:description" content="C# 中的协变性、逆变性和不变性协变和逆变的概念&amp;ensp; 协变性: 子类转化为父类 string -&amp;gt; object  逆变性: 父类强制转换为子类 object -&amp;gt; string 或者 object -&amp;gt; (object)string  不变性: 既不可以协变也不可以逆变 (List || 自定义泛型类型不加 out 或 in 修饰)   泛型类型的可变性泛型修饰符 ou">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>C# 中的协变性、逆变性和不变性</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/go/">Go</a></li>
+         
+          <li><a href="/categories/rust/">Rust</a></li>
+         
+          <li><a href="/categories/dotnet/">.Net</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/03/27/elasticsearch-windows-2_basic_usage/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/02/22/cs-vs_remote_deployment_webapp/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&text=C# 中的协变性、逆变性和不变性"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&title=C# 中的协变性、逆变性和不变性"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&is_video=false&description=C# 中的协变性、逆变性和不变性"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C# 中的协变性、逆变性和不变性&body=Check out this article: http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&title=C# 中的协变性、逆变性和不变性"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&title=C# 中的协变性、逆变性和不变性"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&title=C# 中的协变性、逆变性和不变性"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&title=C# 中的协变性、逆变性和不变性"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&name=C# 中的协变性、逆变性和不变性&description=&lt;h1 id=&quot;C-中的协变性、逆变性和不变性&quot;&gt;&lt;a href=&quot;#C-中的协变性、逆变性和不变性&quot; class=&quot;headerlink&quot; title=&quot;C# 中的协变性、逆变性和不变性&quot;&gt;&lt;/a&gt;C# 中的协变性、逆变性和不变性&lt;/h1&gt;&lt;h2 id=&quot;协变和逆变的概念-ensp&quot;&gt;&lt;a href=&quot;#协变和逆变的概念-ensp&quot; class=&quot;headerlink&quot; title=&quot;协变和逆变的概念&amp;ensp;&quot;&gt;&lt;/a&gt;协变和逆变的概念&amp;ensp;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;协变性: 子类转化为父类 string -&amp;gt; object&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;逆变性: 父类强制转换为子类 object -&amp;gt; string 或者 object -&amp;gt; (object)string&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;不变性: 既不可以协变也不可以逆变 (List&lt;t&gt; || 自定义泛型类型不加 out 或 in 修饰)&lt;/t&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;泛型类型的可变性&quot;&gt;&lt;a href=&quot;#泛型类型的可变性&quot; class=&quot;headerlink&quot; title=&quot;泛型类型的可变性&quot;&gt;&lt;/a&gt;泛型类型的可变性&lt;/h2&gt;&lt;h3 id=&quot;泛型修饰符&quot;&gt;&lt;a href=&quot;#泛型修饰符&quot; class=&quot;headerlink&quot; title=&quot;泛型修饰符&quot;&gt;&lt;/a&gt;泛型修饰符&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;out (返回值): 对于泛型参数, out 关键字指定给类型参数是协变的.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;in (输入参数): 对于泛型参数, in 关键字指定改类型那个参数是逆变的.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;可以在泛型接口或泛型委托中使用&lt;/li&gt;
+&lt;li&gt;泛型参数中 in 和 out 可以共同存在&lt;/li&gt;
+&lt;/ul&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&t=C# 中的协变性、逆变性和不变性"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#C-中的协变性、逆变性和不变性"><span class="toc-number">1.</span> <span class="toc-text">C# 中的协变性、逆变性和不变性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#协变和逆变的概念-ensp"><span class="toc-number">1.1.</span> <span class="toc-text">协变和逆变的概念 </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型类型的可变性"><span class="toc-number">1.2.</span> <span class="toc-text">泛型类型的可变性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#泛型修饰符"><span class="toc-number">1.2.1.</span> <span class="toc-text">泛型修饰符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#框架定义的泛型委托"><span class="toc-number">1.2.2.</span> <span class="toc-text">框架定义的泛型委托</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义泛型委托"><span class="toc-number">1.2.3.</span> <span class="toc-text">自定义泛型委托</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#框架定义的泛型接口"><span class="toc-number">1.2.4.</span> <span class="toc-text">框架定义的泛型接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义泛型接口"><span class="toc-number">1.2.5.</span> <span class="toc-text">自定义泛型接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#思考"><span class="toc-number">1.2.6.</span> <span class="toc-text">思考</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#为什么-out-返回值-只能协变"><span class="toc-number">1.2.6.1.</span> <span class="toc-text"> 为什么 out(返回值) 只能协变? </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#为什么-out-返回值-只能协变-1"><span class="toc-number">1.2.6.2.</span> <span class="toc-text"> 为什么 out(返回值) 只能协变? </span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        C# 中的协变性、逆变性和不变性
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Bogerv</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-03-18T09:35:03.000Z" itemprop="datePublished">2017-03-18</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/dotnet/">dotnet</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/C-Syntax/">C# Syntax</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="C-中的协变性、逆变性和不变性"><a href="#C-中的协变性、逆变性和不变性" class="headerlink" title="C# 中的协变性、逆变性和不变性"></a>C# 中的协变性、逆变性和不变性</h1><h2 id="协变和逆变的概念-ensp"><a href="#协变和逆变的概念-ensp" class="headerlink" title="协变和逆变的概念&ensp;"></a>协变和逆变的概念&ensp;</h2><ul>
+<li><p>协变性: 子类转化为父类 string -&gt; object</p>
+</li>
+<li><p>逆变性: 父类强制转换为子类 object -&gt; string 或者 object -&gt; (object)string</p>
+</li>
+<li><p>不变性: 既不可以协变也不可以逆变 (List<t> || 自定义泛型类型不加 out 或 in 修饰)</t></p>
+</li>
+</ul>
+<h2 id="泛型类型的可变性"><a href="#泛型类型的可变性" class="headerlink" title="泛型类型的可变性"></a>泛型类型的可变性</h2><h3 id="泛型修饰符"><a href="#泛型修饰符" class="headerlink" title="泛型修饰符"></a>泛型修饰符</h3><blockquote>
+<p>out (返回值): 对于泛型参数, out 关键字指定给类型参数是协变的.</p>
+</blockquote>
+<blockquote>
+<p>in (输入参数): 对于泛型参数, in 关键字指定改类型那个参数是逆变的.</p>
+</blockquote>
+<ul>
+<li>可以在泛型接口或泛型委托中使用</li>
+<li>泛型参数中 in 和 out 可以共同存在</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="框架定义的泛型委托"><a href="#框架定义的泛型委托" class="headerlink" title="框架定义的泛型委托"></a>框架定义的泛型委托</h3><ul>
+<li><code>Action&lt;T&gt;</code> (T 支持逆变)</li>
+<li><code>Func&lt;TResult&gt;</code> (T 支持协变)</li>
+<li><code>Comparison&lt;T&gt;</code></li>
+<li><code>Predicate&lt;T&gt;</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public delegate TResult Func&lt;out TResult&gt;();</span><br><span class="line">public delegate void Action&lt;in T&gt;(T obj);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="自定义泛型委托"><a href="#自定义泛型委托" class="headerlink" title="自定义泛型委托"></a>自定义泛型委托</h3><h3 id="框架定义的泛型接口"><a href="#框架定义的泛型接口" class="headerlink" title="框架定义的泛型接口"></a>框架定义的泛型接口</h3><ul>
+<li><code>IEnumerable&lt;T&gt;</code> (T 支持协变)</li>
+<li><code>IEnumerator&lt;T&gt;</code> (T 支持协变)</li>
+<li><code>IQueryable&lt;T&gt;</code> (T 支持协变)</li>
+<li><code>IGrouping&lt;TKey, TElement&gt;</code> (TKey 和 TElement 支持协变)</li>
+<li><code>IComparer&lt;T&gt;</code> (T 支持逆变)</li>
+<li><code>IEqualityComparer&lt;T&gt;</code> (T 支持逆变)</li>
+<li><code>IComparable&lt;T&gt;</code> (T 支持逆变)</li>
+</ul>
+<h3 id="自定义泛型接口"><a href="#自定义泛型接口" class="headerlink" title="自定义泛型接口"></a>自定义泛型接口</h3><h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><h4 id="为什么-out-返回值-只能协变"><a href="#为什么-out-返回值-只能协变" class="headerlink" title=" 为什么 out(返回值) 只能协变? "></a><p style="color:red;"> 为什么 out(返回值) 只能协变? </p></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IEnumerable&lt;object&gt; obj = new List&lt;object&gt;();</span><br><span class="line">//如果在这里我想obj中添加</span><br><span class="line">IEnumeralbe&lt;string&gt; str = obj;</span><br></pre></td></tr></table></figure>
+
+<h4 id="为什么-out-返回值-只能协变-1"><a href="#为什么-out-返回值-只能协变-1" class="headerlink" title=" 为什么 out(返回值) 只能协变? "></a><p style="color:red;"> 为什么 out(返回值) 只能协变? </p></h4>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/go/">Go</a></li>
+         
+          <li><a href="/categories/rust/">Rust</a></li>
+         
+          <li><a href="/categories/dotnet/">.Net</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#C-中的协变性、逆变性和不变性"><span class="toc-number">1.</span> <span class="toc-text">C# 中的协变性、逆变性和不变性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#协变和逆变的概念-ensp"><span class="toc-number">1.1.</span> <span class="toc-text">协变和逆变的概念 </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型类型的可变性"><span class="toc-number">1.2.</span> <span class="toc-text">泛型类型的可变性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#泛型修饰符"><span class="toc-number">1.2.1.</span> <span class="toc-text">泛型修饰符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#框架定义的泛型委托"><span class="toc-number">1.2.2.</span> <span class="toc-text">框架定义的泛型委托</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义泛型委托"><span class="toc-number">1.2.3.</span> <span class="toc-text">自定义泛型委托</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#框架定义的泛型接口"><span class="toc-number">1.2.4.</span> <span class="toc-text">框架定义的泛型接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义泛型接口"><span class="toc-number">1.2.5.</span> <span class="toc-text">自定义泛型接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#思考"><span class="toc-number">1.2.6.</span> <span class="toc-text">思考</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#为什么-out-返回值-只能协变"><span class="toc-number">1.2.6.1.</span> <span class="toc-text"> 为什么 out(返回值) 只能协变? </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#为什么-out-返回值-只能协变-1"><span class="toc-number">1.2.6.2.</span> <span class="toc-text"> 为什么 out(返回值) 只能协变? </span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&text=C# 中的协变性、逆变性和不变性"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&title=C# 中的协变性、逆变性和不变性"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&is_video=false&description=C# 中的协变性、逆变性和不变性"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=C# 中的协变性、逆变性和不变性&body=Check out this article: http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&title=C# 中的协变性、逆变性和不变性"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&title=C# 中的协变性、逆变性和不变性"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&title=C# 中的协变性、逆变性和不变性"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&title=C# 中的协变性、逆变性和不变性"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&name=C# 中的协变性、逆变性和不变性&description=&lt;h1 id=&quot;C-中的协变性、逆变性和不变性&quot;&gt;&lt;a href=&quot;#C-中的协变性、逆变性和不变性&quot; class=&quot;headerlink&quot; title=&quot;C# 中的协变性、逆变性和不变性&quot;&gt;&lt;/a&gt;C# 中的协变性、逆变性和不变性&lt;/h1&gt;&lt;h2 id=&quot;协变和逆变的概念-ensp&quot;&gt;&lt;a href=&quot;#协变和逆变的概念-ensp&quot; class=&quot;headerlink&quot; title=&quot;协变和逆变的概念&amp;ensp;&quot;&gt;&lt;/a&gt;协变和逆变的概念&amp;ensp;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;协变性: 子类转化为父类 string -&amp;gt; object&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;逆变性: 父类强制转换为子类 object -&amp;gt; string 或者 object -&amp;gt; (object)string&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;不变性: 既不可以协变也不可以逆变 (List&lt;t&gt; || 自定义泛型类型不加 out 或 in 修饰)&lt;/t&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;泛型类型的可变性&quot;&gt;&lt;a href=&quot;#泛型类型的可变性&quot; class=&quot;headerlink&quot; title=&quot;泛型类型的可变性&quot;&gt;&lt;/a&gt;泛型类型的可变性&lt;/h2&gt;&lt;h3 id=&quot;泛型修饰符&quot;&gt;&lt;a href=&quot;#泛型修饰符&quot; class=&quot;headerlink&quot; title=&quot;泛型修饰符&quot;&gt;&lt;/a&gt;泛型修饰符&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;out (返回值): 对于泛型参数, out 关键字指定给类型参数是协变的.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;in (输入参数): 对于泛型参数, in 关键字指定改类型那个参数是逆变的.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;可以在泛型接口或泛型委托中使用&lt;/li&gt;
+&lt;li&gt;泛型参数中 in 和 out 可以共同存在&lt;/li&gt;
+&lt;/ul&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://bogerv.wang/2017/03/18/cs-covarianceAndContravariance/&t=C# 中的协变性、逆变性和不变性"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2017-2020
+    Bogerv
+    <a href="http://beian.miit.gov.cn/" target="_blank">京ICP备20022301号-1</a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/go/">Go</a></li>
+         
+          <li><a href="/categories/rust/">Rust</a></li>
+         
+          <li><a href="/categories/dotnet/">.Net</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<!-- clipboard -->
+
+  <script src="/lib/clipboard/clipboard.min.js"></script>
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
