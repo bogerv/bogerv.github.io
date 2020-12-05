@@ -77,6 +77,7 @@
     ```sh
     docker exec -it blog.me hexo generate
     docker exec -it blog.me hexo deploy
+    sudo nginx -s reload
     ```
 
 ## 0x02.配置 Nginx 反向代理
